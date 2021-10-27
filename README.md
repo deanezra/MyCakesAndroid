@@ -7,7 +7,7 @@ Tech used in the app:
 
 - Livedata: The app also uses the Android X Livedata to implement the reactive parts of MVVM.
 - Retrofit: For Web api network calls.
-- JUnit and Mockito: Unit tests and mocking
+- JUnit and MockK : Unit tests and mocking
 - Glide: Simplify loading up images from URLs into the UI.
 
 # Android studio notes

@@ -41,6 +41,9 @@ dependencies {
 
     //ViewModel and livedata
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    // Life cycle ViewModelScope:
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
     //Retrofit
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -55,4 +58,11 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    // Needed for Test Dispatcher:
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1'
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+
+    // Mock K is a nice Mocking library for kotlin that doesnt have the spy on final kotlin classes
+    // issue that Mockito has (Although could used Mockito inline version)
+    testImplementation "io.mockk:mockk:1.12.0"
 }
