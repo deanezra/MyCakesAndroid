@@ -10,7 +10,7 @@ import retrofit2.http.GET
 interface RetrofitService {
 
     @GET("waracle_cake-android-client")
-    fun getAllCakes() : Response<List<Cake>>
+    suspend fun getAllCakes() : Response<List<Cake>>
 
     companion object {
 
