@@ -8,7 +8,7 @@ import com.deanezra.android.mycakes.databinding.AdapterCakeBinding
 import com.deanezra.android.mycakes.models.Cake
 import com.squareup.picasso.Picasso
 
-class MainAdapter: RecyclerView.Adapter<MainViewHolder>() {
+class MainAdapter(private val onClickListener: OnClickListener): RecyclerView.Adapter<MainViewHolder>() {
 
     var cakes = mutableListOf<Cake>()
 
@@ -33,13 +33,22 @@ class MainAdapter: RecyclerView.Adapter<MainViewHolder>() {
             .placeholder(R.drawable.ic_cake_slice)
             .error(R.drawable.ic_cake_slice)
             .into(holder.binding.image)
+
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(cake)
+        }
     }
 
     override fun getItemCount(): Int {
         return cakes.size
     }
+
+    class OnClickListener(val clickListener: (cake: Cake) -> Unit) {
+        fun onClick(cake: Cake) = clickListener(cake)
+    }
 }
 
 class MainViewHolder(val binding: AdapterCakeBinding) : RecyclerView.ViewHolder(binding.root) {
-
+    // Empty on purpose.
 }
+

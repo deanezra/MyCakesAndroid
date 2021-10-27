@@ -7,10 +7,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.deanezra.android.mycakes.R
 import com.deanezra.android.mycakes.databinding.ActivityMainBinding
+import com.deanezra.android.mycakes.models.Cake
 import com.deanezra.android.mycakes.network.NetworkStatus
 import com.deanezra.android.mycakes.reposiitories.CakeRepository
 import com.deanezra.android.mycakes.services.RetrofitService
@@ -24,7 +26,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewModel: MainViewModel
 
     private val retrofitService = RetrofitService.getInstance()
-    val adapter = MainAdapter()
+    val adapter = MainAdapter(MainAdapter.OnClickListener { cake ->
+        showCakeDescriptionDialog(cake)
+    })
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu to use in the action bar
@@ -86,5 +90,13 @@ class MainActivity : AppCompatActivity() {
             }
         })
         viewModel.getAllCakes()
+    }
+
+    fun showCakeDescriptionDialog(cake:Cake) {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle(cake.title)
+        alertDialogBuilder.setMessage(cake.desc)
+
+        alertDialogBuilder.create().show()
     }
 }
