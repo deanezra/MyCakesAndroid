@@ -21,9 +21,9 @@ class MainViewModel constructor(private val repository: CakeRepository)  : ViewM
             if (it.isSuccessful){
 
                 it.body()?.let {
-                    // Remove duplicate cakes by title field:
-                    var distinctCakes = it.distinctBy { it.title }
-                    cakeList.postValue(distinctCakes)
+                    // Remove duplicate cakes by title field and then sort remaining cakes
+                    // by title in alphabetical order (Ascending):
+                    cakeList.postValue(it.distinctBy { it.title }.sortedBy{ it.title })
                 }
 
                 networkStatus.postValue(NetworkStatus.SUCCESS)

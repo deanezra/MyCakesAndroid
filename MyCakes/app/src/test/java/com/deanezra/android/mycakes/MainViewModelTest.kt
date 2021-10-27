@@ -100,12 +100,12 @@ class MainViewModelTest {
 
         //Then
 
-        // Verify that view model call the repository to pull from api:
+        // Verify that view model called the repository to pull from api:
         coVerify { cakeRepository.getAllCakes() }
 
-        // And finally the view model cakes list has cakes without duplicates and
-        // that state shows success
-        assertEquals(duplicatedApiCakes.distinctBy { it.title }, viewModel.cakeList.value)
+        // Check the returned cakes are without duplicates and sorted alphabetically (ascending):
+        assertEquals(duplicatedApiCakes.distinctBy{ it.title }.sortedBy{ it.title }, viewModel.cakeList.value)
+        // Finally check that state shows success:
         assertEquals(NetworkStatus.SUCCESS, viewModel.networkStatus.value)
     }
 
