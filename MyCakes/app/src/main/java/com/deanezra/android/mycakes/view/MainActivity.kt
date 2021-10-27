@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity() {
         // Handle presses on the action bar menu items
         when (item.itemId) {
             R.id.action_refresh -> {
+                Toast.makeText(applicationContext,
+                    "Refreshing cake list..",
+                    Toast.LENGTH_SHORT).show()
                 viewModel.getAllCakes()
                 return true
             }
@@ -72,13 +75,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.networkStatus.observe(this, {
             when (it) {
-
                 NetworkStatus.ERROR, NetworkStatus.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.spinner.visibility = View.GONE
                     binding.recyclerview.visibility = View.VISIBLE
                 }
                 NetworkStatus.LOADING -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.spinner.visibility = View.VISIBLE
                     binding.recyclerview.visibility = View.VISIBLE
                 }
             }

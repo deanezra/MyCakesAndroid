@@ -7,6 +7,7 @@ import com.deanezra.android.mycakes.reposiitories.CakeRepository
 import androidx.lifecycle.viewModelScope
 import com.deanezra.android.mycakes.network.NetworkStatus
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 class MainViewModel constructor(private val repository: CakeRepository)  : ViewModel() {
 
@@ -17,37 +18,24 @@ class MainViewModel constructor(private val repository: CakeRepository)  : ViewM
     fun getAllCakes()  = viewModelScope.launch {
         networkStatus.postValue(NetworkStatus.LOADING)
 
-        repository.getAllCakes().let {
-            if (it.isSuccessful){
+            repository.getAllCakes().let {
+                if (it.isSuccessful) {
 
-                it.body()?.let {
-                    // Remove duplicate cakes by title field and then sort remaining cakes
-                    // by title in alphabetical order (Ascending):
-                    cakeList.postValue(it.distinctBy { it.title }.sortedBy{ it.title })
+                    it.body()?.let {
+                        // Remove duplicate cakes by title field and then sort remaining cakes
+                        // by title in alphabetical order (Ascending):
+                        cakeList.postValue(it.distinctBy { it.title }.sortedBy { it.title })
+                    }
+                    networkStatus.postValue(NetworkStatus.SUCCESS)
+                } else {
+                    // We will leave the cake list contents as is. But we will set error state and msg
+                    networkStatus.postValue(NetworkStatus.ERROR)
+
+                    // TODO: Add better error checking (it.errorBody).toString() doesn't give a readable message.
+                    errorMessage.postValue("There was an error calling the Cakes API. Server responded with $it.code()")
+                    //errorMessage.postValue(it.errorBody().toString())
                 }
-
-                networkStatus.postValue(NetworkStatus.SUCCESS)
-            }else{
-                // We will leave the cake list contents as is. But we will set error state and msg
-                networkStatus.postValue(NetworkStatus.ERROR)
-                errorMessage.postValue(it.errorBody().toString())
             }
-        }
+
     }
-
-    /*
-    fun getAllCakes() {
-
-        val response = repository.getAllCakes()
-        response.enqueue(object : Callback<List<Cake>> {
-            override fun onResponse(call: Call<List<Cake>>, response: Response<List<Cake>>) {
-                cakeList.postValue(response.body())
-            }
-
-            override fun onFailure(call: Call<List<Cake>>, t: Throwable) {
-                errorMessage.postValue(t.message)
-            }
-        })
-    }
-    */
 }
